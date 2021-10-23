@@ -1,35 +1,66 @@
-class Form extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: ''
-        };
+const { useState } = React;
 
-        this.handleInputChange = this.handleInputChange.bind(this);
+const Form = () => {
+
+    const [field, setField] = useState({
+        username: '',
+        password: ''
+    });
+
+    const handleChange = e => {
+        setField({
+            ...field,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleFormSubmit = e => {
+        e.preventDefault();
+        validateUserCreds();
+        sendUserData();
+    };
+
+    const validateUserCreds = () => {
+        if (field.username === 'Fabric' && field.password === 'password1') {
+            return true;
+        } else {
+            alert('Invalid User Credentials!');
+        }
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({ [name]: value });
+    const sendUserData = async () => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(field)
+        }
+        try {
+            const response = await fetch('/api', options);
+            if (response.status === 200) {
+                redirectAuthenticatedUser();
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    Username:
-                    <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange} />
-                </label>
-                <label>
-                    Password:
-                    <input type="text" name="password" value={this.state.password} onChange={this.handleInputChange} />
-                </label>
+    const redirectAuthenticatedUser = () => {
+        window.location.assign('/info');
+    };
+
+    return (
+        <div>
+            <form>
+                <label>Username:</label>
+                <input type="text" name="username" value={field.username} onChange={handleChange} />
+                <label>Password:</label>
+                <input type="text" name="password" value={field.password} onChange={handleChange} /> 
+                <button onClick={handleFormSubmit}>Login</button>
             </form>
-        )
-    }
+        </div>
+    )
 }
 
 const domContainer = document.querySelector('#login-form');
