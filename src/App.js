@@ -1,5 +1,7 @@
 import React from 'react';
 import Form from './components/Form';
+import Details from './components/Details';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 const appStyle = {
     height: '250px',
@@ -8,9 +10,12 @@ const appStyle = {
 
 const App = () => {
     return (
-        <div style={appStyle} className='App'>
-            <Form />
-        </div>
+        <BrowserRouter>
+            <div style={appStyle} className='App'>
+                <Route exact path="/" component={Form} />
+                <Route path="/details" component={Details} />
+            </div>
+        </BrowserRouter>  
     );
 };
 
