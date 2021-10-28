@@ -1,11 +1,14 @@
 import React, { useRef } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logInUser } from '../actions/userActions';
 import Field from './Field';
 
-const Form = ({ logInUser }) => {
+const Form = (props) => {
+
     const usernameRef = useRef();
     const passwordRef = useRef();
+
+    const dispatch = useDispatch()
 
     const formStyle = {
         margin: 'auto',
@@ -35,9 +38,9 @@ const Form = ({ logInUser }) => {
             username: usernameRef.current.value,
             password: passwordRef.current.value
         };
-         if (validateUserCreds()) {
-            logInUser(data);
-         };
+        if (validateUserCreds()) {
+            dispatch(logInUser(data, props));
+        }
     };
 
     const validateUserCreds = () => {
@@ -59,4 +62,4 @@ const Form = ({ logInUser }) => {
     )
 }
 
-export default connect(null, { logInUser })(Form);
+export default Form;
