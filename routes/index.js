@@ -1,13 +1,14 @@
 const path = require('path');
+const cors = require('cors');
 const utils = require('../utils');
 
 module.exports = app => {
 
     // api routes
-    app.post('/api', async (req, res, next) => {
+    app.post('/api', cors(), async (req, res, next) => {
         try {
-            await utils.storeUserData(req.body);
-            res.sendStatus(200);
+            const data = await utils.storeUserData(req.body);
+            res.json({ data });
         } catch (err) {
             next(err);
         }
@@ -17,15 +18,6 @@ module.exports = app => {
         try {
             await utils.logOutUser(req.body);
             res.sendStatus(200);
-        } catch (err) {
-            next(err);
-        }
-    });
-
-    app.get('/api/user', async (req, res, next) => {
-        try {
-            const results = await utils.retrieveUserData();
-            res.json({ data: results });
         } catch (err) {
             next(err);
         }
@@ -48,19 +40,4 @@ module.exports = app => {
             next(err);
         }
     });
-
-    // view routes
-    app.get('/info', async (req, res, next) => {
-        try {
-            const isAuthenticated = await utils.checkIfAuthenticated();
-            isAuthenticated ? res.sendFile(path.join(__dirname, '../src/info.html')) : res.redirect('/');
-        } catch (err) {
-            next(err);
-        }
-    });
-
-    app.get('*', async (req, res) => {
-        return res.sendFile(path.join(__dirname, '../src/login.html'));
-    });
-
 }
