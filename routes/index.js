@@ -7,8 +7,8 @@ module.exports = app => {
     // api routes
     app.post('/api', cors(), async (req, res, next) => {
         try {
-            const data = await utils.storeUserData(req.body);
-            res.json({ data });
+            const results = await utils.storeUserData(req.body);
+            res.json({ data: results });
         } catch (err) {
             next(err);
         }
@@ -16,8 +16,8 @@ module.exports = app => {
 
     app.post('/api/logout', async (req, res, next) => {
         try {
-            await utils.logOutUser(req.body);
-            res.sendStatus(200);
+            const results = await utils.logOutUser(req.body);
+            res.json({ data: results });
         } catch (err) {
             next(err);
         }
