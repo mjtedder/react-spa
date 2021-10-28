@@ -1,67 +1,62 @@
-const { useState } = React;
+import React, { useRef } from 'react';
+import { connect } from 'react-redux';
+import { logInUser } from '../actions/userActions';
+import Field from './Field';
 
-const Form = () => {
+const Form = ({ logInUser }) => {
+    const usernameRef = useRef();
+    const passwordRef = useRef();
 
-    const [field, setField] = useState({
-        username: '',
-        password: ''
-    });
+    const formStyle = {
+        margin: 'auto',
+        padding: '10px',
+        border: '1px solid #c9c9c9',
+        borderRadius: '5px',
+        background: '#f5f5f5',
+        width: '220px',
+        display: 'block'
+    };
 
-    const handleChange = e => {
-        setField({
-            ...field,
-            [e.target.name]: e.target.value
-        });
+    const submitStyle = {
+        margin: '10px 0 0 0',
+        padding: '7px 10px',
+        border: '1px solid #efffff',
+        borderRadius: '3px',
+        background: '#3085d6',
+        width: '100%',
+        fontSize: '15px',
+        color: 'white',
+        display: 'block'
     };
 
     const handleFormSubmit = e => {
         e.preventDefault();
-        validateUserCreds();
-        sendUserData();
+        const data = {
+            username: usernameRef.current.value,
+            password: passwordRef.current.value
+        };
+         if (validateUserCreds()) {
+            logInUser(data);
+         };
     };
 
     const validateUserCreds = () => {
-        if (field.username === 'Fabric' && field.password === 'password1') {
+        if (usernameRef.current.value === 'Fabric' && passwordRef.current.value === 'password1') {
             return true;
         } else {
             alert('Invalid User Credentials!');
         }
-    }
-
-    const sendUserData = async () => {
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(field)
-        }
-        try {
-            const response = await fetch('/api', options);
-            if (response.status === 200) {
-                redirectAuthenticatedUser();
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const redirectAuthenticatedUser = () => {
-        window.location.assign('/info');
     };
 
     return (
-        <div>
-            <form>
-                <label>Username:</label>
-                <input type="text" name="username" value={field.username} onChange={handleChange} />
-                <label>Password:</label>
-                <input type="text" name="password" value={field.password} onChange={handleChange} /> 
-                <button onClick={handleFormSubmit}>Login</button>
+            <form style={formStyle} onSubmit={handleFormSubmit}>
+                <Field ref={usernameRef} label="Username:" type="text" />
+                <Field ref={passwordRef} label="Password:" type="password" />
+                <div>
+                    <button style={submitStyle} type="submit">Submit</button>
+                </div>
             </form>
-        </div>
     )
 }
 
-const domContainer = document.querySelector('#login-form');
-ReactDOM.render(<Form />, domContainer);
+export default connect(null, { logInUser })(Form);
