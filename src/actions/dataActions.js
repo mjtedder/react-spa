@@ -7,7 +7,7 @@ export const getCurrentDateTime = () => dispatch => {
             dispatch({
                 type: GET_CURRENT_DATE_TIME,
                 payload: date
-            }).catch(err => console.error(err))
+            })
         )     
 };
 
@@ -18,6 +18,6 @@ export const getDirectoryPath = () => dispatch => {
             dispatch({
                 type: GET_CURRENT_DIRECTORY,
                 payload: dir
-            }).catch(err => console.error(err))
+            })
         )
 };
