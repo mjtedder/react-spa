@@ -1,30 +1,39 @@
-import { LOGIN_USER, LOGOUT_USER, FETCH_USER_DETAILS } from './types';
+import { LOGIN_USER, LOGOUT_USER } from './types';
 
-export const logInUser = (data, history) => dispatch => {
+export const logInUser = (data, props) => dispatch => {
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     }
     fetch('http://localhost:3000/api', options)
         .then(res => res.json())
-        .then(data => {
+        .then(user => {
             dispatch({
                 type: LOGIN_USER,
-                payload: data
+                payload: user
             });
+            props.history.push('/details')
         });
 };
 
-export const logOutUser = (username) => dispatch => {
-    fetch('/api/logout', options, { body: JSON.stringify(username) })
+export const logOutUser = (username, props) => dispatch => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: username })
+    }
+    fetch('http://localhost:3000/api/logout', options)
         .then(res => res.json())
-        .then(data =>
+        .then(data => {
             dispatch({
                 type: LOGOUT_USER,
                 payload: data
-            })
-        );
+            });
+            props.history.push('/')
+        });
 };
