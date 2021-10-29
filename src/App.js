@@ -11,7 +11,7 @@ const appStyle = {
 const App = () => {
     return (
         <BrowserRouter>
-            <div style={appStyle} className='App'>
+            <div style={appStyle}>
                 <Route exact path="/" component={Form} />
                 <Route path="/details" component={Details} />
             </div>
