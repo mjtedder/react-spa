@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { logInUser } from '../actions/userActions';
+import { USERNAME, PASSWORD } from '../../constants';
 import Field from './Field';
 
 const Form = (props) => {
@@ -44,7 +45,8 @@ const Form = (props) => {
     };
 
     const validateUserCreds = () => {
-        if (usernameRef.current.value === 'Fabric' && passwordRef.current.value === 'password1') {
+        console.log(USERNAME)
+        if (usernameRef.current.value === USERNAME && passwordRef.current.value === PASSWORD) {
             return true;
         } else {
             alert('Invalid User Credentials!');

@@ -1,7 +1,8 @@
 import { GET_CURRENT_DATE_TIME, GET_CURRENT_DIRECTORY } from "./types";
+import { BASE_URL } from '../../constants';
 
 export const getCurrentDateTime = () => dispatch => {
-    fetch('http://localhost:3000/api/date-time')
+    fetch(`${BASE_URL}/api/date-time`)
         .then(res => res.json())
         .then(date =>
             dispatch({
@@ -12,7 +13,7 @@ export const getCurrentDateTime = () => dispatch => {
 };
 
 export const getDirectoryPath = () => dispatch => {
-    fetch('http://localhost:3000/api/directory')
+    fetch(`${BASE_URL}/api/directory`)
         .then(res => res.json())
         .then(dir =>
             dispatch({

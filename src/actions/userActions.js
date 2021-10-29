@@ -1,4 +1,6 @@
 import { LOGIN_USER, LOGOUT_USER } from './types';
+import { apiRequest } from '../../utils';
+import { BASE_URL } from '../../constants';
 
 export const logInUser = (data, props) => dispatch => {
     const options = {
@@ -8,7 +10,7 @@ export const logInUser = (data, props) => dispatch => {
         },
         body: JSON.stringify(data)
     }
-    fetch('http://localhost:3000/api', options)
+    fetch(`${BASE_URL}/api`, options)
         .then(res => res.json())
         .then(user => {
             dispatch({
@@ -27,7 +29,7 @@ export const logOutUser = (username, props) => dispatch => {
         },
         body: JSON.stringify({ data: username })
     }
-    fetch('http://localhost:3000/api/logout', options)
+    fetch(`${BASE_URL}/api/logout`, options)
         .then(res => res.json())
         .then(data => {
             dispatch({
