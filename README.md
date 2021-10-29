@@ -17,6 +17,6 @@ Run the node server locally:
   
 In another terminal instance, start the React development server:
 
-  npm start
+  	npm start
 
 Now, open the local application on port 8080 at the URL: `http://localhost:8080/`.
